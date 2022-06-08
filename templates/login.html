@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>onRtools Bokeh Login</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/login.css')}}">
+</head>
+
+<body>
+    <div class="wrap">
+        <form class="login-form" method="POST">
+            <div class="form-header">
+                <h3><img src="https://static.bokeh.org/logos/logotype.svg"></h3>
+                <p> Login to access your onRtools application</p>
+            </div>
+            <!--Email Input-->
+            <div class="form-group">
+                <input name="email" type="email" class="form-input" autocapitalize="off" autocorrect="off"
+                    placeholder="e-mail">
+            </div>
+            <!--Password Input-->
+            <div class="form-group">
+                <input name="password" type="password" class="form-input" placeholder="password">
+            </div>
+            <!--Login Button-->
+            <div class="form-group">
+                <button class="form-button" type="submit" value = "Submit">Login</button>
+            </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </form>
+    </div>
+</body>
+
+</html>
