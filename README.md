@@ -37,13 +37,23 @@ pip install wheel
 pip install -r requirements.txt
 ```
 
-7. 
+7. Test the connection 
+   ```bash
+   gunicorn --bind 0.0.0.0:5000 wsgi:app
+   ```
 
-8. Add login-flask-bokeh as a system service, so every time the server is restarted, the application will start automatically.
+9. Add login-flask-bokeh as a system service, so every time the server is restarted, the application will start automatically.
 
 The login-flask-bokeh file is in /var/www/login-flask-bokeh, so the name of the server must be entered in "ExecStart=...".
 
-login-flask-bokeh.service
+
+    Start 3 worker processes (though you should adjust this as necessary)
+    Create and bind to a Unix socket file, myproject.sock, within your project directory.
+    Set an umask value of 007 so that the socket file is created to give access to the owner and group, while restricting other access
+    Specify the WSGI entry point file name, along with the Python callable within that file (wsgi:app)
+
+
+flask.service
 ```bash
 [Unit]
 #  specifies metadata and dependencies
@@ -56,7 +66,7 @@ After=network.target
 
 [Service]
 # Service specify the user and group under which our process will run.
-User=mcifuentes
+User=root
 
 # give group ownership to the www-data group so that Nginx can communicate easily with the Gunicorn processes.
 Group=www-data
@@ -66,7 +76,7 @@ WorkingDirectory=/var/www/flask-login
 Environment="PATH=/root/login-flask-bokeh/bin"
 
 # We'll then specify the commanded to start the service
-ExecStart=/bin/bash -c 'source /root/login-flask-bokeh/bin/activate; gunicorn -w 3 --bind unix:/var/www/login-flask-bokeh/ipc.sock wsgi:app'
+ExecStart=/bin/bash -c 'source /root/login-flask-bokeh/bin/activate; gunicorn --workers 3 --bind unix:/var/www/login-flask-bokeh/app.sock wsgi:app'
 Restart=always
 
 # This will tell systemd what to link this service to if we enable it to start at boot. We want this service to start when the regular multi-user system is up and running:
