@@ -13,22 +13,22 @@ sudo apt install python3-pip python3-venv python3-dev build-essential libssl-dev
 
 3. Create the virtual environment and activate it:
 ```python3
-python3 -m venv login-onrtools
+python3 -m venv login-flask-bokeh
 
-source login-onrtools/bin/activate
+source login-flask-bokeh/bin/activate
 ```
 
-4. Now create a folder to hold the project. We will store it in /var/www/login-onrtools, change permissions accordingly.
+4. Now create a folder to hold the project. We will store it in /var/www/login-flask-bokeh, change permissions accordingly.
 
 ```
-mkdir /var/wwww/login-onrtools
-sudo chown -R $USER:www-data /var/www/login-onrtools
+mkdir /var/wwww/login-flask-bokeh
+sudo chown -R $USER:www-data /var/www/login-flask-bokeh
 ```
 
-5. Download the login-onrtools app from bitbucket.
+5. Download the login-flask-bokeh app from bitbucket.
 
 ```bash
-git clone https://transluciddata@bitbucket.org/devRockStar/login-onrtools.git
+git clone https://transluciddata@bitbucket.org/devRockStar/login-flask-bokeh.git
 ```
 
 6. Install app requirements (to create a list environment file during app development, use: pip3 freeze > requirements.txt)
@@ -38,11 +38,11 @@ pip install wheel
 pip install -r requirements.txt
 ```
 
-7. Add login-onrtools as a system service, so every time the server is restarted, the application will start automatically.
+7. Add login-flask-bokeh as a system service, so every time the server is restarted, the application will start automatically.
 
-The login-onrtools file is in /var/www/login-onrtools, so the name of the server must be entered in "ExecStart=...".
+The login-flask-bokeh file is in /var/www/login-flask-bokeh, so the name of the server must be entered in "ExecStart=...".
 
-login-onrtools.service
+login-flask-bokeh.service
 ```bash
 [Unit]
 #  specifies metadata and dependencies
@@ -62,10 +62,10 @@ Group=www-data
 
 # We'll then map out the working directory and set the PATH environmental variable so that the init system knows where our the executables for the process are located (within our virtual environment).
 WorkingDirectory=/var/www/flask-login
-Environment="PATH=/root/login-onrtools/bin"
+Environment="PATH=/root/login-flask-bokeh/bin"
 
 # We'll then specify the commanded to start the service
-ExecStart=/bin/bash -c 'source /root/login-onrtools/bin/activate; gunicorn -w 3 --bind unix:/var/www/login-onrtools/ipc.sock wsgi:app'
+ExecStart=/bin/bash -c 'source /root/login-flask-bokeh/bin/activate; gunicorn -w 3 --bind unix:/var/www/login-flask-bokeh/ipc.sock wsgi:app'
 Restart=always
 
 # This will tell systemd what to link this service to if we enable it to start at boot. We want this service to start when the regular multi-user system is up and running:
