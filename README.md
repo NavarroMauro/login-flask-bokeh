@@ -14,7 +14,6 @@ sudo apt install python3-pip python3-venv python3-dev build-essential libssl-dev
 3. Create the virtual environment and activate it:
 ```python3
 python3 -m venv login-flask-bokeh
-
 source login-flask-bokeh/bin/activate
 ```
 
@@ -25,7 +24,7 @@ mkdir /var/wwww/login-flask-bokeh
 sudo chown -R $USER:www-data /var/www/login-flask-bokeh
 ```
 
-5. Download the login-flask-bokeh app from bitbucket.
+5. Download the login-flask-bokeh repo to /var/www/login-flask-bokeh.
 
 ```bash
 git clone https://transluciddata@bitbucket.org/devRockStar/login-flask-bokeh.git
@@ -38,7 +37,9 @@ pip install wheel
 pip install -r requirements.txt
 ```
 
-7. Add login-flask-bokeh as a system service, so every time the server is restarted, the application will start automatically.
+7. 
+
+8. Add login-flask-bokeh as a system service, so every time the server is restarted, the application will start automatically.
 
 The login-flask-bokeh file is in /var/www/login-flask-bokeh, so the name of the server must be entered in "ExecStart=...".
 
@@ -73,7 +74,7 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-Note: In the last line of [Service] We tell it to start 3 worker processes. We will also tell it to create and bind to a Unix socket file within our project directory called app.sock. We’ll set an unmask value of 007 so that the socket file is created giving access to the owner and group, while restricting other access. Finally, we need to pass in the WSGI entry point file name and the Python callable within.
+Note: In the last line of [Service] file We tell it to start 3 worker processes. We will also tell it to create and bind to a Unix socket file within our project directory called app.sock. We’ll set an unmask value of 007 so that the socket file is created giving access to the owner and group, while restricting other access. Finally, we need to pass in the WSGI entry point file name and the Python callable within.
 
 8. We can now start the Gunicorn service we created and enable it so that it starts at boot:
 
