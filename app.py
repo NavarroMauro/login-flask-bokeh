@@ -1,8 +1,14 @@
 from bokeh.util import token
+from bokeh.client import pull_session
+from bokeh.embed import server_session
 import os
 from flask import Flask, render_template, request, redirect
 from flask_login import login_required, current_user, login_user, logout_user
 from models import UserModel, db, login
+from bokeh.embed import server_document
+
+script = server_document("https://onrtools.staging.quantyoo.dev/liferadio")
+
 
 SECRET_KEY = os.urandom(32)
 
@@ -24,12 +30,18 @@ def create_all():
     db.create_all()
 
 
+# @app.route("/dashboard")
+# @login_required
+# def dashboard():
+    # s_id = token.generate_session_id()
+    # return redirect("http://<bokeh-server-addr>:<port>/?bokeh-session-id={}".format(s_id), code=302)
+    # return render_template("dashboard.html")
+
+
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    # s_id = token.generate_session_id()
-    # return redirect("http://<bokeh-server-addr>:<port>/?bokeh-session-id={}".format(s_id), code=302)
-    return render_template("dashboard.html")
+    return  render_template('dashboard.html', my_script=script)
 
 
 @app.route("/login", methods=["POST", "GET"])
