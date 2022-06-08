@@ -47,10 +47,10 @@ pip install -r requirements.txt
 The login-flask-bokeh file is in /var/www/login-flask-bokeh, so the name of the server must be entered in "ExecStart=...".
 
 
-    Start 3 worker processes (though you should adjust this as necessary)
-    Create and bind to a Unix socket file, myproject.sock, within your project directory.
-    Set an umask value of 007 so that the socket file is created to give access to the owner and group, while restricting other access
-    Specify the WSGI entry point file name, along with the Python callable within that file (wsgi:app)
+Start 3 worker processes (though you should adjust this as necessary)
+Create and bind to a Unix socket file, myproject.sock, within your project directory.
+Set an umask value of 007 so that the socket file is created to give access to the owner andgroup, while restricting other access
+Specify the WSGI entry point file name, along with the Python callable within that file (wsgi:app)
 
 
 flask.service
@@ -87,7 +87,6 @@ WantedBy=multi-user.target
 Note: In the last line of [Service] file We tell it to start 3 worker processes. We will also tell it to create and bind to a Unix socket file within our project directory called app.sock. We’ll set an unmask value of 007 so that the socket file is created giving access to the owner and group, while restricting other access. Finally, we need to pass in the WSGI entry point file name and the Python callable within.
 
 8. We can now start the Gunicorn service we created and enable it so that it starts at boot:
-
 ```bash
 sudo systemctl start app
 sudo systemctl enable app
